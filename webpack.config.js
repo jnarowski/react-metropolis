@@ -10,6 +10,10 @@ module.exports = {
     './src/index'
   ],
 
+  resolve: {
+    extensions: ['', '.js', '.jsx']
+  },
+
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'bundle.js',
@@ -25,9 +29,6 @@ module.exports = {
       test: /\.js$/,
       loaders: ['react-hot', 'babel'],
       include: path.join(__dirname, 'src')
-    },{
-      test: /\.scss$/,
-      loader: 'style!css!sass'
     }]
   }
   
