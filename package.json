@@ -43,6 +43,8 @@
     "webpack-dev-server": "^1.8.2"
   },
   "dependencies": {
-    "react": "^0.13.3"
+    "react": "^0.13.3",
+    "webpack": "^1.9.6",
+    "webpack-dev-server": "^1.8.2"
   }
 }
