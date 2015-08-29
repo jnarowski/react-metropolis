@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 
 export default class PaginatorRow extends Component {
 	render() {
@@ -17,10 +17,94 @@ export default class PaginatorRow extends Component {
 };
 
 export default class PaginatorBox extends Component {
+  propTypes: {
+    recordCount: React.PropTypes.number.isRequired
+  }
+
+	getDefaultProps() {
+		return props = {
+	  	recordCount: 0,
+	  	perPage: 50
+	  }
+	}
+
+	getInitialState(){
+		console.log('get initial state');
+
+		this.props.totalPages = this._getPageCount(this.props.perPage, this.props.recordCount);
+
+	  return {
+	  	currentPage: this.props.initalPage ? this.props.initalPage : 1
+	  }
+	}
+
+	canPrev() {
+		this.state = {}
+		console.log('can prev');
+  	console.log(this);
+		return this.state.currentPage != 1
+	}
+
+	canNext() {
+		var pageCount = this._getPageCount(this.props.perPage, this.props.recordCount);
+		return this.state.currentPage < this.props.totalPages;
+	}
+
+	handlePrevious() {
+		this._setPage(this.state.currentPage - 1);
+	}
+
+	handleNext() {
+		this._setPage(this.state.currentPage + 1);
+	}
+
+	handlePageChange(page) {
+		this._setPage(page);
+	}
+
+	_setPage(page) {
+		this.setState({ 
+			currentPage: page
+		})
+	}
+
+	_getPageCount(perPageCount, recordCount) {
+		return Math.ceil(recordCount / perPageCount);
+	}
+
+	_getPages(perPageCount, recordCount) {
+		let pages = [];
+		let pageCount = this._getPageCount(perPageCount, recordCount);
+
+		// for(let pageNum of pageCount) {
+	 //    pages.push(pageNum+1);
+		// }
+
+		return pages;
+	}
+
+  _canShowFirst() {
+    return this.state.currentPage >= 5;
+  }
+  
+  _canShowLast() {
+    return this.totalPages - this.state.currentPage >= 4;
+  }
+
+  _currentInterval() {
+    let startIndex = (this.state.currentPage >= 5 ? this.state.currentPage - 2 : 1);
+    let endIndex   = (this.state.currentPage <= (this.props.totalPages - 4) ? this.state.currentPage + 2 : this.props.totalPages);
+  }
+
   render() {
 		let prevClass = 'disabled';
 		let nextClass = 'disabled';
 		let items = this._getPages(this.props.perPage, this.props.recordCount);
+		let rows = items.map(function(item, i) {
+  		return (
+    		<PaginatorRow currentPage={this.state.currentPage} onClick={this.handlePageChange.bind(this, item)} pageNum={item} />
+  		);
+		}, this);
 
 		if(this.canPrev()){ 
 			prevClass = '' 
@@ -29,12 +113,6 @@ export default class PaginatorBox extends Component {
 		if(this.canNext()){ 
 			nextClass = '' 
 		}
-
-		rows = items.map(function(item, i) {
-  		return (
-    		<PaginatorRow currentPage={this.state.currentPage} onClick={this.handlePageChange.bind(this, item)} pageNum={item} />
-  		);
-		}, this);
 
 	  return (
 		  <div id="pagination">
