@@ -2,6 +2,7 @@
   "name": "react-hot-boilerplate",
   "version": "1.0.0",
   "description": "Boilerplate for ReactJS project with hot code reloading",
+  "engines": {"node": "0.12.6"},
   "scripts": {
     "start": "node server.js",
     "lint": "eslint src",
